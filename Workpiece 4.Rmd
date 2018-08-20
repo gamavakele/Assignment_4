@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+load("eye_FR_testdata-1")
+
+load("eye_FR_traindata-1")
+
+install.packages("needs")
+library(needs)
+library(magrittr)
+library(psych)
+library(tidyverse)
+
+```
+```{r}
+
+describeBy(traindata, traindata$lineupacc)
+
+
+```
+
+# changing variable into a categorical
+```{r}
+traindata %<>% 
+  mutate(lineupaccfac = as.factor(lineupacc))
+  
+  
+```
+
+```{r}
+traindata %>% 
+  ggplot(mapping = aes(y = automatic, x = as.factor(lineupacc)))+
+  geom_boxplot() +
+  geom_jitter(alpha=0.5)+
+  facet_grid(exposure~lineuptpta)
+
+mosaicplot(~lineuptpta + exposure + lineupacc,  data = traindata)
+
+install.packages("vcd")
+library(vcd)
+
+
+```
+
+```{r}
+traindata %>% 
+  ggplot(mapping = aes(y = log(lineuprt), x = as.factor(lineupacc)))+
+ geom_boxplot() +
+  geom_jitter(alpha=0.5)+
+ facet_grid(exposure~lineuptpta)
+```
+
